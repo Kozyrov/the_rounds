@@ -10,13 +10,22 @@
     "type": "git",
     "url": "git+https://github.com/Kozyrov/the_rounds.git"
   },
-  "author": "",
+  "author": "Kozyrov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Kozyrov/the_rounds/issues"
   },
   "homepage": "https://github.com/Kozyrov/the_rounds#readme",
   "dependencies": {
-    "mongodb": "^2.2.31"
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.10"
+  },
+  "devDependencies": {
+    "expect": "^21.0.0",
+    "mocha": "^3.5.0",
+    "nodemon": "^1.12.0",
+    "supertest": "^3.0.0"
   }
 }
