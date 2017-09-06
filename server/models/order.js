@@ -45,6 +45,10 @@ var Order = mongoose.model('Order', {
         required: true,
         default: false
     },
+    completedAt: {
+        type: Number,
+        default: null
+    }
 });
 
 module.exports = {Order};
