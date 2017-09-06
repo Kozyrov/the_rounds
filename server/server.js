@@ -25,6 +25,16 @@ app.post('/order', (req, res)=>{
     })
 });
 
+app.get('/order', (req, res)=>{
+    Order.find().then((orders)=>{
+        res.send({orders});
+    }, (err)=>{
+        res.status(400).send(err);
+    })
+})
+
 app.listen(3001, ()=>{
     console.log('Started on port 3001');
 });
+
+module.exports = {app};
