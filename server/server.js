@@ -9,6 +9,7 @@ const {Order} = require('./models/order');
 const {User} = require('./models/user');
 
 const app = express();
+const port = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
 
@@ -61,8 +62,8 @@ app.get('/order/:orderID', (req, res)=>{
     //error
         //400 - send back nothing
 
-app.listen(3001, ()=>{
-    console.log('Started on port 3001');
+app.listen(port, ()=>{
+    console.log(`Started on port ${port}`);
 });
 
 module.exports = {app};
