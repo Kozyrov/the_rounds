@@ -1,4 +1,5 @@
 //npm/libaray imports
+const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
@@ -52,15 +53,46 @@ app.get('/order/:orderID', (req, res)=>{
     }
 });
 
-//isValid
-    //404 - call send without a value.
+app.delete('/order/:orderID', (req, res)=>{
+    let orderID = req.params.orderID;
+    if(!ObjectID.isValid(orderID)){
+        res.status(404).send();
+    } else {
+        Order.findByIdAndRemove(orderID).then((order)=>{
+            if(!order){
+                res.status(404).send();
+            } else {
+                res.status(200).send({order});
+            }
+        }).catch((err)=>{
+            res.status(400).send();
+        })
+    }
+});
 
-//find by id
-    //success
-        //if todo send it back
-        //if no todo - if no todo - send back a 404 with nothing send with no argument
-    //error
-        //400 - send back nothing
+app.patch('/order/:orderID', (req, res)=>{
+    let orderID = req.params.orderID;
+    let body = _.pick(req.body, ['user', 'notes', 'item', 'location', 'completed']);
+    if(!ObjectID.isValid(orderID)){
+        res.status(404).send();
+    } else {
+        if(_.isBoolean(body.completed) && body.completed){
+            body.completedAt = new Date().getTime();
+        } else {
+            body.completed = false;
+            body.completedAt = null;
+        }
+    }
+    Order.findByIdAndUpdate(orderID, {$set: body}, {new: true}).then((order)=> {
+        if(!order){
+            res.status(404).send();
+        } else {
+            res.send({order});
+        }
+    }, (err =>{
+        res.status(400).send();
+    }))
+})
 
 app.listen(port, ()=>{
     console.log(`Started on port ${port}`);
