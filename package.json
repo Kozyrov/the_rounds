@@ -4,11 +4,15 @@
   "description": "an app used to simplify gathering office lunch orders",
   "main": "index.js",
   "scripts": {
+    "start":"node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kozyrov/the_rounds.git"
+  },
+  "engines": {
+    "node": "8.0.0"
   },
   "author": "Kozyrov",
   "license": "ISC",
