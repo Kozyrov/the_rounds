@@ -40,12 +40,15 @@ app.get('/order', authenticate, (req, res)=>{
     });
 });
 
-app.get('/order/:orderID', (req, res)=>{
+app.get('/order/:orderID', authenticate, (req, res)=>{
     let orderID = req.params.orderID;
     if(!ObjectID.isValid(orderID)){
         res.status(404).send();
     } else {
-        Order.findById(orderID).then((order)=>{
+        Order.findOne({
+            _id: orderID,
+            _creator: req.user._id
+        }).then((order)=>{
             if(!order){
                 res.status(404).send();
             } else {
@@ -57,12 +60,15 @@ app.get('/order/:orderID', (req, res)=>{
     }
 });
 
-app.delete('/order/:orderID', (req, res)=>{
+app.delete('/order/:orderID', authenticate, (req, res)=>{
     let orderID = req.params.orderID;
     if(!ObjectID.isValid(orderID)){
         res.status(404).send();
     } else {
-        Order.findByIdAndRemove(orderID).then((order)=>{
+        Order.findOneAndRemove({
+            _id: orderID,
+            _creator: req.user._id
+        }).then((order)=>{
             if(!order){
                 res.status(404).send();
             } else {
@@ -74,7 +80,7 @@ app.delete('/order/:orderID', (req, res)=>{
      }
 });
 
-app.patch('/order/:orderID', (req, res)=>{
+app.patch('/order/:orderID', authenticate, (req, res)=>{
     let orderID = req.params.orderID;
     let body = _.pick(req.body, ['user', 'notes', 'item', 'location', 'completed']);
     if(!ObjectID.isValid(orderID)){
@@ -87,7 +93,10 @@ app.patch('/order/:orderID', (req, res)=>{
             body.completedAt = null;
         }
     }
-    Order.findByIdAndUpdate(orderID, {$set: body}, {new: true}).then((order)=> {
+    Order.findOneAndUpdate({
+        _id: orderID,
+        _creator: req.user._id
+    }, {$set: body}, {new: true}).then((order)=> {
         if(!order){
             res.status(404).send();
         } else {
