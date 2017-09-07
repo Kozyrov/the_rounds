@@ -67,7 +67,7 @@ app.delete('/order/:orderID', (req, res)=>{
         }).catch((err)=>{
             res.status(400).send();
         })
-    }
+     }
 });
 
 app.patch('/order/:orderID', (req, res)=>{
@@ -92,6 +92,18 @@ app.patch('/order/:orderID', (req, res)=>{
     }, (err =>{
         res.status(400).send();
     }))
+})
+
+app.post('/user', (req, res)=>{
+    let body = _.pick(req.body, ['display_name', 'email', 'password']);
+    let user = new User(body);
+    user.save().then(()=>{
+        return user.generateAuthToken();
+    }).then((token)=>{
+        res.header('x-auth', token).send(user);
+    }).catch((err)=>{
+        res.status(400).send(err);
+    })
 })
 
 app.listen(port, ()=>{
