@@ -1,3 +1,5 @@
+require('./config/config.js')
+
 //npm/libaray imports
 const _ = require('lodash');
 const express = require('express');
