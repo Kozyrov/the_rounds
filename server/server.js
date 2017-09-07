@@ -26,7 +26,7 @@ app.post('/order', (req, res)=>{
         res.send(doc);
     }, (err)=>{
         res.status(400).send(err);
-    })
+    });
 });
 
 app.get('/order', (req, res)=>{
@@ -34,8 +34,8 @@ app.get('/order', (req, res)=>{
         res.send({orders});
     }, (err)=>{
         res.status(400).send(err);
-    })
-})
+    });
+});
 
 app.get('/order/:orderID', (req, res)=>{
     let orderID = req.params.orderID;
@@ -50,7 +50,7 @@ app.get('/order/:orderID', (req, res)=>{
             }
         }).catch((err)=>{
             res.status(400).send();
-        })
+        });
     }
 });
 
@@ -67,7 +67,7 @@ app.delete('/order/:orderID', (req, res)=>{
             }
         }).catch((err)=>{
             res.status(400).send();
-        })
+        });
      }
 });
 
@@ -90,10 +90,10 @@ app.patch('/order/:orderID', (req, res)=>{
         } else {
             res.send({order});
         }
-    }, (err =>{
+    }, (err) =>{
         res.status(400).send();
-    }))
-})
+    });
+});
 
 app.post('/user', (req, res)=>{
     let body = _.pick(req.body, ['display_name', 'email', 'password']);
@@ -104,11 +104,22 @@ app.post('/user', (req, res)=>{
         res.header('x-auth', token).send(user);
     }).catch((err)=>{
         res.status(400).send(err);
-    })
-})
+    });
+});
 
 app.get('/user/me', authenticate, (req, res)=>{
     res.send(req.user);
+});
+
+app.post('/user/login', (req, res)=>{
+    let body =_.pick(req.body, ['email', 'password']);
+    User.findByCredentials(body.email, body.password).then((user)=>{
+        return user.generateAuthToken().then((token)=>{
+            res.header('x-auth', token).send(user);
+        });
+    }).catch((err)=>{
+        res.status(400).send();
+    });
 });
 
 app.listen(port, ()=>{
