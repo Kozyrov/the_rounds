@@ -15,12 +15,13 @@ const port = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
 
-app.post('/order', (req, res)=>{
+app.post('/order', authenticate, (req, res)=>{
     let order = new Order({
         user: req.body.user,
         location: req.body.location,
         item: req.body.item,
-        notes: req.body.notes
+        notes: req.body.notes,
+        _creator: req.user._id
     })
     order.save().then((doc)=>{
         res.send(doc);
@@ -29,8 +30,10 @@ app.post('/order', (req, res)=>{
     });
 });
 
-app.get('/order', (req, res)=>{
-    Order.find().then((orders)=>{
+app.get('/order', authenticate, (req, res)=>{
+    Order.find({
+        _creator: req.user._id
+    }).then((orders)=>{
         res.send({orders});
     }, (err)=>{
         res.status(400).send(err);
