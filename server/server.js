@@ -10,6 +10,7 @@ const {ObjectID} = require('mongodb');
 const {mongoose} = require('./db/mongoose');
 const {Order} = require('./models/order');
 const {User} = require('./models/user');
+const {Coord} = require('./models/coordinator');
 const {authenticate} = require('./middleware/authenticate');
 
 const app = express();
@@ -142,6 +143,18 @@ app.delete('/user/me/token', authenticate, (req, res)=>{
     }, ()=>{
         res.status(400).send();
     })
+});
+
+app.post('/coord', (req, res)=>{
+    let body = _.pick(req.body, ['email', 'password']);
+    let coord = new Coord(body);
+    user.save().then(()=>{
+        return user.generateAuthToken();
+    }).then((token)=>{
+        res.header('x-auth', token).send(user);
+    }).catch((err)=>{
+        res.status(400).send(err);
+    });
 });
 
 app.listen(port, ()=>{
