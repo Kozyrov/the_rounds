@@ -1,0 +1,17 @@
+form{
+    display: inline;
+}
+.new_user{
+    text-align: left;
+}
+#log_in{
+    margin-left: 55px;
+    padding-left: 55px;
+    padding-right: 55px;
+}
+#new_user{
+    margin-right: 200px;
+}
+.validation_message{
+    color:red;
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Steven G. Frankenfield">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>   
+    <script rel="stylesheet" type="text/javascript" src="./js/script.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="container">
+        <section id="header">
+            test
+        </section>
+    </div>
+    <div id="login_modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-header text-center">
+                <h1 class="modal-title"><b>The Rounds</b></h1>
+            </div>
+            <div class="modal-body text-center">
+                <form id="modal_form">
+                    <span>Email</span><br>
+                    <input class="email_input"  type="email" name="email" required placeholder="example@email.com"><br>
+                    <span>Password</span><br>
+                    <input class="password_input" type="text" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})"><br>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form>
+                            <button id="new_user" type="button" class="btn btn-warning">Create New Account</button>
+                        </form>
+                        <form>
+                            <button id="log_in" type="submit" class="btn btn-primary">Log In</button>                        
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <span class="validation_message"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<body>
+</html>
