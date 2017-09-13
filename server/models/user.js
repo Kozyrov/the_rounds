@@ -8,7 +8,7 @@ var UserSchema = new mongoose.Schema({
     display_name: {
         type: String,
         unique: true,
-        equired: true,
+        required: true,
         validate: {
             validator: (val)=>{
                 return /^[\w\s]+$/.test(val);

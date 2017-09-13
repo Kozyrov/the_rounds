@@ -1,22 +1,25 @@
 require('./config/config.js')
 
-//npm/libaray imports
+//npm/library imports
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+const cors = require('cors');
 
 //local imports
 const {mongoose} = require('./db/mongoose');
 const {Order} = require('./models/order');
 const {User} = require('./models/user');
-const {Coord} = require('./models/coordinator');
+// const {Coord} = require('./models/coordinator');
 const {authenticate} = require('./middleware/authenticate');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 app.post('/order', authenticate, (req, res)=>{
     let order = new Order({
@@ -111,6 +114,7 @@ app.patch('/order/:orderID', authenticate, (req, res)=>{
 });
 
 app.post('/user', (req, res)=>{
+    console.log(req.body);
     let body = _.pick(req.body, ['display_name', 'email', 'password']);
     let user = new User(body);
     user.save().then(()=>{
@@ -145,17 +149,17 @@ app.delete('/user/me/token', authenticate, (req, res)=>{
     })
 });
 
-app.post('/coord', (req, res)=>{
-    let body = _.pick(req.body, ['email', 'password']);
-    let coord = new Coord(body);
-    user.save().then(()=>{
-        return user.generateAuthToken();
-    }).then((token)=>{
-        res.header('x-auth', token).send(user);
-    }).catch((err)=>{
-        res.status(400).send(err);
-    });
-});
+// app.post('/coord', (req, res)=>{
+//     let body = _.pick(req.body, ['email', 'password']);
+//     let coord = new Coord(body);
+//     user.save().then(()=>{
+//         return user.generateAuthToken();
+//     }).then((token)=>{
+//         res.header('x-auth', token).send(user);
+//     }).catch((err)=>{
+//         res.status(400).send(err);
+//     });
+// });
 
 app.listen(port, ()=>{
     console.log(`Started on port ${port}`);
