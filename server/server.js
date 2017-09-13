@@ -5,6 +5,7 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+const cors = require('cors');
 
 //local imports
 const {mongoose} = require('./db/mongoose');
@@ -14,9 +15,11 @@ const {User} = require('./models/user');
 const {authenticate} = require('./middleware/authenticate');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 app.post('/order', authenticate, (req, res)=>{
     let order = new Order({
@@ -111,6 +114,7 @@ app.patch('/order/:orderID', authenticate, (req, res)=>{
 });
 
 app.post('/user', (req, res)=>{
+    console.log(req.body);
     let body = _.pick(req.body, ['display_name', 'email', 'password']);
     let user = new User(body);
     user.save().then(()=>{

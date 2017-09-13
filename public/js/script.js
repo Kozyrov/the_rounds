@@ -9,9 +9,13 @@ $(window).on("load", function () {
 
 
 function account_creation(){
+    //remove the log in and new account buttons
+    $(".footer_buttons").empty();
+    //add on the submit buttons
+    $(".footer_buttons").append("<br><button id='submit_user' type='button' class='btn btn-success'>Submit</button>")
     //append new account creation form
     $("#modal_form").prepend("<span>Display Name</span><br><input class='display_name' type='text' name='display_name' required><br>");
-    $("#modal_form").append("<span>Confirm Password</span><br><input class='password_confirm' type='password' name='password_confirm'><br><br><button id='submit_user' type='button' class='btn btn-success'>Submit</button>");
+    $("#modal_form").append("<span>Confirm Password</span><br><input class='password_confirm' type='password' name='password_confirm'><br>");
     $("#submit_user").click(function(){
         password_validation()
     });
@@ -61,7 +65,8 @@ function display_validate(email, password){
     let regex = /^[\w\s]+$/;
     let display_name = $(".display_name").val();
     if(regex.test(display_name)){
-        submit_new_user(email, password, display_name);
+        let user_data = new New_User(display_name, email, password);        
+        submit_new_user(user_data);
     } else {
         $(".validation_message").text("Your display name may only contain alphanumeric characters.");
         $(".display_name").click(function(){
@@ -74,15 +79,16 @@ function message_clear(){
     $(".validation_message").text("");  
 };
 
-function submit_new_user(email, password, display_name){
-    let user_data = new New_User(email, display_name, password);
+function submit_new_user(user_data){
+    console.log(user_data);
     $.ajax ({
         dataType: 'JSON',
         data: user_data,
         method:'POST',
         url: 'http://localhost:3001/user',
         success: (res)=>{
-            console.log(res);
+            //log the new user in
+            log_in(res);
         },
         error: (xhr, ajaxOptions, thrownError)=>{
             console.log(xhr, thrownError);
@@ -90,8 +96,12 @@ function submit_new_user(email, password, display_name){
     });
 };
 
-function New_User(email, display_name, password){
-    this.email = email,
+function log_in(data){
+    console.log(data);
+}
+
+function New_User(display_name, email, password){
     this.display_name = display_name,
+    this.email = email,
     this.password = password
 };
